@@ -7,6 +7,8 @@ import com.greglixandrao.screenmatchspring.model.Episode;
 import com.greglixandrao.screenmatchspring.service.APIConsumption;
 import com.greglixandrao.screenmatchspring.service.DataConversion;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -60,5 +62,23 @@ public class Main {
                 ).collect(Collectors.toList());
 
         episodes.forEach(System.out::println);
+
+        System.out.println();
+        System.out.println("A partir de que ano você gostaria de saber sobre os episódios? (aaaa)");
+
+        var yearSearch = scanner.nextInt();
+        scanner.nextLine();
+
+        LocalDate searchDate = LocalDate.of(yearSearch, 1, 1);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+        episodes.stream()
+                .filter(e -> e.getReleaseDay() != null && e.getReleaseDay().isAfter(searchDate))
+                .forEach(e -> System.out.println(
+                        "Temporada: " + e.getSeason() +
+                                " Episódio: " + e.getTitle() +
+                                " Data Lançamento: " + e.getReleaseDay().format(formatter)
+                ));
     }
 }
