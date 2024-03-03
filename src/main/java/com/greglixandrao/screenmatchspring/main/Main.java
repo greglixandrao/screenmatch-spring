@@ -3,6 +3,7 @@ package com.greglixandrao.screenmatchspring.main;
 import com.greglixandrao.screenmatchspring.model.DataEpisode;
 import com.greglixandrao.screenmatchspring.model.DataSeason;
 import com.greglixandrao.screenmatchspring.model.DataSeries;
+import com.greglixandrao.screenmatchspring.model.Episode;
 import com.greglixandrao.screenmatchspring.service.APIConsumption;
 import com.greglixandrao.screenmatchspring.service.DataConversion;
 
@@ -53,5 +54,11 @@ public class Main {
                 .limit(5)
                 .forEach(System.out::println);
 
+        List<Episode> episodes = seasons.stream()
+                .flatMap(t -> t.episodes().stream()
+                .map(d -> new Episode(t.seasonNumber(), d))
+                ).collect(Collectors.toList());
+
+        episodes.forEach(System.out::println);
     }
 }
